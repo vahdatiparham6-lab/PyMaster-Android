@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -15,9 +16,15 @@ android {
         versionCode = 1
         versionName = "0.1.0"
 
-        python {
-            version = "3.13"
+        ndk {
+            abiFilters += listOf("arm64-v8a")
         }
+    }
+}
+
+chaquopy {
+    defaultConfig {
+        version = "3.13"
     }
 }
 
