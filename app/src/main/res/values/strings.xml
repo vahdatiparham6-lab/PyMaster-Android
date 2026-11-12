@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PyMaster</string>
+    <string name="welcome">به PyMaster خوش آمدی!</string>
+    <string name="tagline">پایتون رو از صفر یاد بگیر</string>
+    <string name="start_learning">شروع یادگیری</string>
+    <string name="lessons">درس‌ها</string>
+    <string name="practice">تمرین</string>
+    <string name="profile">پروفایل من</string>
+</resources>
