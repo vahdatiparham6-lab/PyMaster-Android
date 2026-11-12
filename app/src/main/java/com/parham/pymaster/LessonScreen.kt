@@ -1,7 +1,8 @@
+
 package com.parham.pymaster
 
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 
 object LessonScreen {
 
@@ -64,13 +65,19 @@ object LessonScreen {
 
                 if (completed) {
                     onProgressChanged()
+
                     AlertDialog.Builder(context)
-                        .setMessage("آفرین! ${lesson.xp} XP گرفتی 🎉")
+                        .setMessage(
+                            "آفرین! ${lesson.xp} XP گرفتی 🎉"
+                        )
                         .setPositiveButton("عالی!", null)
                         .show()
+
                 } else {
                     AlertDialog.Builder(context)
-                        .setMessage("این درس قبلاً تکمیل شده است!")
+                        .setMessage(
+                            "این درس قبلاً تکمیل شده است!"
+                        )
                         .setPositiveButton("باشه", null)
                         .show()
                 }
