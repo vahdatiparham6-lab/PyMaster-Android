@@ -1,3 +1,4 @@
+
 package com.parham.pymaster
 
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.activity.ComponentActivity
 class MainActivity : ComponentActivity() {
 
     private lateinit var stats: TextView
+    private lateinit var output: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,27 +37,34 @@ class MainActivity : ComponentActivity() {
             setPadding(12, 24, 12, 24)
         }
 
+        val lessonsButton = Button(this).apply {
+            text = "📚 کتابخانه درس‌ها"
+        }
+
         val editor = EditText(this).apply {
             setText("print('Hello PyMaster!')")
             textSize = 16f
             setTextColor(Color.WHITE)
             setBackgroundColor(Color.rgb(30, 41, 59))
             minLines = 5
+            gravity = Gravity.TOP
         }
 
         val runButton = Button(this).apply {
             text = "▶ اجرای کد"
         }
 
-        val output = TextView(this).apply {
+        output = TextView(this).apply {
             text = "خروجی برنامه اینجا نمایش داده می‌شود."
             textSize = 16f
             setTextColor(Color.GREEN)
             setPadding(12, 20, 12, 20)
         }
 
-        val lessonButton = Button(this).apply {
-            text = "⭐ تکمیل یک درس آزمایشی"
+        lessonsButton.setOnClickListener {
+            LessonScreen.show(this) {
+                updateStats()
+            }
         }
 
         runButton.setOnClickListener {
@@ -64,18 +73,12 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        lessonButton.setOnClickListener {
-            ProgressManager.completeLesson(this)
-            ProgressManager.addXP(this, 10)
-            updateStats()
-        }
-
         layout.addView(title)
         layout.addView(stats)
+        layout.addView(lessonsButton)
         layout.addView(editor)
         layout.addView(runButton)
         layout.addView(output)
-        layout.addView(lessonButton)
 
         setContentView(
             ScrollView(this).apply {
