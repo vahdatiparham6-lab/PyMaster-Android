@@ -2,6 +2,7 @@
 package com.parham.pymaster
 
 import android.content.Context
+import org.json.JSONArray
 
 object CodeHistory {
 
@@ -12,44 +13,47 @@ object CodeHistory {
     fun saveCode(context: Context, code: String) {
         if (code.isBlank()) return
 
-        val prefs = context.getSharedPreferences(
-            PREFS,
-            Context.MODE_PRIVATE
-        )
-
-        val history = prefs.getStringSet(
-            HISTORY,
-            emptySet()
-        )?.toMutableList() ?: mutableListOf()
+        val prefs = getPrefs(context)
+        val history = getHistory(context).toMutableList()
 
         history.remove(code)
         history.add(0, code)
 
-        val limitedHistory = history.take(MAX_HISTORY).toSet()
+        val json = JSONArray()
+
+        history.take(MAX_HISTORY).forEach {
+            json.put(it)
+        }
 
         prefs.edit()
-            .putStringSet(HISTORY, limitedHistory)
+            .putString(HISTORY, json.toString())
             .apply()
     }
 
     fun getHistory(context: Context): List<String> {
-        val prefs = context.getSharedPreferences(
-            PREFS,
-            Context.MODE_PRIVATE
-        )
+        val saved = getPrefs(context)
+            .getString(HISTORY, null)
+            ?: return emptyList()
 
-        return prefs.getStringSet(
-            HISTORY,
-            emptySet()
-        )?.toList() ?: emptyList()
+        return try {
+            val json = JSONArray(saved)
+            List(json.length()) { index ->
+                json.getString(index)
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     fun clearHistory(context: Context) {
-        context.getSharedPreferences(
-            PREFS,
-            Context.MODE_PRIVATE
-        ).edit()
+        getPrefs(context).edit()
             .remove(HISTORY)
             .apply()
     }
+
+    private fun getPrefs(context: Context) =
+        context.getSharedPreferences(
+            PREFS,
+            Context.MODE_PRIVATE
+        )
 }
